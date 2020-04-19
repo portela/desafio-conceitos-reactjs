@@ -8,7 +8,7 @@ function App() {
   const [repositories, setRepositories] = useState([]);
 
   async function loadRepositories() {
-    const response = await Api.listRepositories();
+    const response = await Api.get(`/repositories`);
     setRepositories(response.data);
   }
 
@@ -22,7 +22,7 @@ function App() {
 
   async function handleRemoveRepository(id) {
     try {
-      await Api.removeRepository(id);
+      await Api.delete(`/repositories/${id}`);
       loadRepositories();
     } catch (e) {
       console.error(e);
