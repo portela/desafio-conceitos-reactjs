@@ -8,4 +8,8 @@ export default {
   listRepositories() {
     return api.get(`/repositories`);
   },
+
+  removeRepository(id) {
+    return api.delete(`/repositories/${id}`);
+  },
 };

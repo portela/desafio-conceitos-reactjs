@@ -7,11 +7,12 @@ import Api from "./services/api";
 function App() {
   const [repositories, setRepositories] = useState([]);
 
+  async function loadRepositories() {
+    const response = await Api.listRepositories();
+    setRepositories(response.data);
+  }
+
   useEffect(() => {
-    async function loadRepositories() {
-      const response = await Api.listRepositories();
-      setRepositories(response.data);
-    }
     loadRepositories();
   }, []);
 
@@ -20,20 +21,26 @@ function App() {
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    try {
+      await Api.removeRepository(id);
+      loadRepositories();
+    } catch (e) {
+      console.error(e);
+      console.log("Unable to remove repository!");
+    }
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
         {repositories.map((repo) => (
-          <li> {repo.title} </li>
+          <li key={repo.id}>
+            {repo.title}
+            <button onClick={() => handleRemoveRepository(repo.id)}>
+              Remover
+            </button>
+          </li>
         ))}
-
-        <li>
-          Repositório 1
-          <button onClick={() => handleRemoveRepository(1)}>Remover</button>
-        </li>
       </ul>
 
       <button onClick={handleAddRepository}>Adicionar</button>
