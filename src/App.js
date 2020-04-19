@@ -17,7 +17,18 @@ function App() {
   }, []);
 
   async function handleAddRepository() {
-    // TODO
+    const data = {
+      url: "https://github.com/josepholiveira",
+      title: "Desafio ReactJS",
+      techs: ["React", "Node.js"],
+    };
+    try {
+      await Api.post(`/repositories`, data);
+      loadRepositories();
+    } catch (e) {
+      console.log("Unable to add repository");
+      console.error(e);
+    }
   }
 
   async function handleRemoveRepository(id) {
@@ -25,8 +36,8 @@ function App() {
       await Api.delete(`/repositories/${id}`);
       loadRepositories();
     } catch (e) {
-      console.error(e);
       console.log("Unable to remove repository!");
+      console.error(e);
     }
   }
 
